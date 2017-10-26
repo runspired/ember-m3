@@ -63,6 +63,8 @@ export function extendStore(Store) {
     containsURL(cacheKey) {
       return this._queryCache.contains(cacheKey);
     }
+
+    // TODO: apply https://github.com/emberjs/data/pull/5242 or just update package.json to depend on 2.17
   })
 }
 
@@ -103,7 +105,6 @@ export function extendInternalModel() {
     if (this.hasRecord) {
       this._record._notifyProperties(changedKeys);
     }
-    this.didInitializeData();
   }
 
   InternalModel.prototype._changedKeys = function monkeyPatchedChangedKeys(updates) {
