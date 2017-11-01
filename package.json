@@ -21,9 +21,11 @@
     "ember-cli-babel": "^6.3.0"
   },
   "peerDependencies": {
+    "babel-plugin-ember-modules-api-polyfill": "^1.4.2",
     "ember-data": "emberjs/data#edd75a99622f096255a10bc98195e70796cbc949"
   },
   "devDependencies": {
+    "babel-plugin-ember-modules-api-polyfill": "^1.4.2",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.15.1",

@@ -7,6 +7,9 @@ module.exports = {
   options: {
     babel: {
       loose: true,
+      plugins: [
+        ['ember-modules-api-polyfill', { blacklist: { '@ember/debug': ['assert', 'deprecate', 'warn']} }],
+      ]
     },
   },
 };
