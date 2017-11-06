@@ -4,6 +4,7 @@ import { InternalModel } from 'ember-data/-private';
 
 import MegamorphicModel from '../model';
 import MegamorphicModelFactory from '../factory';
+import { ProjectionFactory } from '../projection';
 import SchemaManager from '../schema-manager';
 import QueryCache from '../query-cache';
 
@@ -24,7 +25,7 @@ export function extendStore(Store) {
     },
 
     _internalModelsFor(modelName) {
-      if (SchemaManager.includesModel(modelName)) {
+      if (SchemaManager.includesModel(modelName) && !SchemaManager.modelIsProjection(modelName)) {
         // Here we could allow schemas to have multiple id-spaces
         return this._super('-ember-m3');
       }
@@ -33,6 +34,9 @@ export function extendStore(Store) {
 
     modelFactoryFor(modelName) {
       if (SchemaManager.includesModel(modelName)) {
+        if (SchemaManager.modelIsProjection(modelName)) {
+          return ProjectionFactory;
+        }
         return MegamorphicModelFactory;
       }
       return this._super(modelName);
@@ -104,7 +108,7 @@ export function extendInternalModel() {
       this._record._notifyProperties(changedKeys);
     }
     this.didInitializeData();
-  }
+  };
 
   InternalModel.prototype._changedKeys = function monkeyPatchedChangedKeys(updates) {
     if (this.hasRecord && typeof this._record._changedKeys === 'function') {
@@ -145,7 +149,7 @@ export function extendInternalModel() {
     }
 
     return changedKeys;
-  }
+  };
 
   InternalModel.prototype.adapterDidCommit = function monkeyPatchedAdapterDidCommit(data) {
     if (data) {
@@ -170,7 +174,7 @@ export function extendInternalModel() {
     if (!data) { return; }
 
     this._record._notifyProperties(changedKeys);
-  }
+  };
   InternalModel.prototype._assignAttributes = function monkeyPatched_assignAttributes(attributes) {
     if (this.hasRecord && typeof this._record._assignAttributes === 'function') {
       return this._record._assignAttributes(attributes);
